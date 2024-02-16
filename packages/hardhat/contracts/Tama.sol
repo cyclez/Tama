@@ -207,4 +207,7 @@ contract TamaFood is ERC20, Ownable {
     function setPricePerEth(uint256 _pricePerEth) external onlyOwner {
         pricePerEth = _pricePerEth;
     }
+    function setMinter(address _minter) public onlyOwner {
+        minter = _minter;
+    }
 }
