@@ -1,7 +1,35 @@
 chat => https://x.com/w1nt3r_eth/status/1692189662134374630?s=20
-chat => https://x.com/w1nt3r_eth/status/1692189662134374630?s=20
 
-multi owner
+governance with ERC-20
+
+metadata SVG
 
 food = ERC20
+
+
+Mint -> Uovo -> startTime = 0
+Lv 0 ->    ->
+Lv 1 -> Sebirachi
+Lv 2 -> Yattatchi
+dead = true -> Ojitichi
+
+
+
+DEAD O RESET?
+
+
+
+TODO LIST
+
+- SVG metadata -
+https://png2svg.com/it/
+
+LVL 1 Sebirechi - Custom Cresta, Piedi, Neo
+LVL 2 Yattatchi - Custom Neo, Mani, Piedi
+
+uri settato alla mint function. 
+color settato in base ad un numero random
+
+Fun Counter ()
+Eat Counter (sazio = 10, non mangia più)
 
