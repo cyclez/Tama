@@ -19,6 +19,20 @@ contract Tama is ERC721, Ownable {
     uint256 public eatFee = 0.05 ether;
     uint256 private _nextTokenId;
 
+    event levelUp(uint256 tokenId, uint8 newLevel);
+    event tokenBorn(uint256 tokenId, uint256 birthTimestamp);
+    event tokenFeeded(
+        uint256 tokenId,
+        uint256 lastCounter,
+        uint256 eatTimestamp
+    );
+    event tokenPlayed(
+        uint256 tokenId,
+        uint256 lastCounter,
+        uint256 playTimestamp
+    );
+    event tokenDeath(uint256 tokenId, uint256 deathTimestamp);
+
     constructor() ERC721("Tama", "TAMA") Ownable(msg.sender) {}
 
     struct tokenData {
@@ -53,6 +67,7 @@ contract Tama is ERC721, Ownable {
             gameData[tokenId].level < 1
         ) {
             gameData[tokenId].level = 1;
+            emit levelUp(tokenId, 1);
         }
 
         if (
@@ -60,6 +75,7 @@ contract Tama is ERC721, Ownable {
             gameData[tokenId].level < 2
         ) {
             gameData[tokenId].level = 2;
+            emit levelUp(tokenId, 1);
         }
     }
 
@@ -90,17 +106,73 @@ contract Tama is ERC721, Ownable {
             "You are not the tokenId holder"
         );
         gameData[tokenId].startTime = block.timestamp;
+        emit tokenBorn(tokenId, gameData[tokenId].startTime);
     }
 
     function eat(uint256 tokenId) public payable gameChecks(tokenId) {
         require(msg.value == eatFee, "Not enough ETH to feed the Tama");
         gameData[tokenId].lastEat = block.timestamp;
         gameData[tokenId].counter += eatPoints;
+        emit tokenFeeded(
+            tokenId,
+            gameData[tokenId].counter,
+            gameData[tokenId].lastEat
+        );
     }
 
     function play(uint256 tokenId) public gameChecks(tokenId) {
         gameData[tokenId].lastPlay = block.timestamp;
         gameData[tokenId].counter += playPoints;
+        emit tokenPlayed(
+            tokenId,
+            gameData[tokenId].counter,
+            gameData[tokenId].lastPlay
+        );
+    }
+
+    /**
+     * -----------  SET FUNCTIONS -----------
+     */
+
+    function setMintFee(uint256 _mintFee) public onlyOwner {
+        mintFee = _mintFee;
+    }
+
+    function setMaxMint(uint256 _maxMint) public onlyOwner {
+        maxMint = _maxMint;
+    }
+
+    //in seconds
+    function setDeatTime(uint256 _deathTime) public onlyOwner {
+        deathTime = _deathTime;
+    }
+
+    function setEatTime(uint256 _eatTime) public onlyOwner {
+        eatTime = _eatTime;
+    }
+
+    function setPlayTime(uint256 _playTime) public onlyOwner {
+        playTime = _playTime;
+    }
+
+    function setEatPoints(uint256 _eatPoints) public onlyOwner {
+        eatPoints = _eatPoints;
+    }
+
+    function setPlayPoints(uint256 _playPoints) public onlyOwner {
+        playPoints = _playPoints;
+    }
+
+    function setLv1Trigger(uint256 _lv1Trigger) public onlyOwner {
+        lv1Trigger = _lv1Trigger;
+    }
+
+    function setLv2Trigger(uint256 _lv2Trigger) public onlyOwner {
+        lv2Trigger = _lv2Trigger;
+    }
+
+    function setEatFee(uint256 _eatFee) public onlyOwner {
+        eatFee = _eatFee;
     }
 }
 
