@@ -1,13 +1,38 @@
-# Sample Hardhat Project
+# Tama - your decentralized gochi
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+A decentralized Tamagochi built for the Urbe.eth campus 2024
 
-Try running some of the following tasks:
+The priject is based on the awesome template https://github.com/kmjones1979/full-stack-dapp-workshop
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+## Requirements
+
+This is an essential command list reminder, check the **full-stack-dapp-workshop** for all the details
+
+Install dependencies
+
 ```
+yarn install
+```
+
+Run Scaffold.eth with local chain 
+
+```
+yarn chain
+yarn start
+yarn deploy
+```
+
+Run The Graph
+```
+yarn clean-node
+yarn run-node
+```
+
+## Quickstart
+
+Do whathever in the requirements, than go to:
+
+`localhost:3000` for scaffold.eth UI
+
+`localhost:8000` for the graphQL UI 
+
