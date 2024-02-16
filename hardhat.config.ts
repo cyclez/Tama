@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox-viem";
+import { version } from "hardhat";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -10,8 +11,8 @@ const config: HardhatUserConfig = {
           optimizer: {
             enabled: true,
             runs: 200,
-          }
-        }
+          },
+        },
       },
     ],
   },

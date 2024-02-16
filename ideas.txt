@@ -1,0 +1,6 @@
+chat
+
+multi owner
+
+food = ERC20
+
