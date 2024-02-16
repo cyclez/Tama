@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Tama is ERC721, Ownable {
@@ -186,13 +188,19 @@ contract Tama is ERC721, Ownable {
 }
 
 contract TamaFood is ERC20, Ownable {
-    constructor(
-        address _minter
-    ) ERC20("TamaFood", "TAFOO") Ownable(msg.sender) {}
+    uint256 pricePerEth = 1000;
 
-    function mint(address to, uint256 amount) public payable {
+    //bool freeTokens = false;
+
+    constructor() ERC20("TamaFood", "TAFOO") Ownable(msg.sender) {}
+
+    function mint(address to) public payable {
+        require(msg.value != 0, "No ETH sent");
+        uint256 amount = (msg.value * pricePerEth);
         _mint(to, amount);
     }
 
-    // Add pricing structure
+    function setPricePerEth(uint256 _pricePerEth) external onlyOwner {
+        pricePerEth = _pricePerEth;
+    }
 }
