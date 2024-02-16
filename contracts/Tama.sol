@@ -84,8 +84,9 @@ contract Tama is ERC721, Ownable {
      */
 
     function purchase(uint256 amount) public payable {
-        require(balanceOf(msg.sender) < maxMint, "Max mint reached.");
-        require(msg.value == mintFee * amount, "Wrong ETH value.");
+        require(amount<=maxMint, "maxMint exceeded.")
+        require(balanceOf(msg.sender) < maxMint, "maxMint reached.");
+        require(msg.value == mintFee * amount, "Wrong ETH value sent.");
         for (uint8 i = 0; i < amount; i++) {
             safeMint(msg.sender);
         }
