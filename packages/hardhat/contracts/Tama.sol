@@ -190,13 +190,13 @@ contract Tama is ERC721, Ownable {
 
 contract TamaFood is ERC20, Ownable {
     uint256 pricePerEth = 1000;
-
     constructor(
         address _minter
     ) ERC20("TamaToken", "TATK") {
     //Ownable(msg.sender) {
         minter = _minter;
     }
+
 
     function mint(address to) public payable {
         require(msg.value != 0, "No ETH sent");
