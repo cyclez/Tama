@@ -2,6 +2,7 @@
 pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -16,8 +17,11 @@ contract Tama is ERC721, Ownable {
     uint256 public playPoints = 10;
     uint256 public lv1Trigger = 100;
     uint256 public lv2Trigger = 500;
-    uint256 public eatFee = 0.001 ether;
+    uint256 public eatFee = 500 ether; //based on TamaFood Token
     uint256 private _nextTokenId;
+
+    IERC20 foodToken;
+    address public tamaFoodAddress;
 
     event levelUp(uint256 tokenId, uint8 newLevel);
     event tokenBorn(uint256 tokenId, uint256 birthTimestamp);
@@ -111,7 +115,11 @@ contract Tama is ERC721, Ownable {
     }
 
     function eat(uint256 tokenId) public payable gameChecks(tokenId) {
-        require(msg.value == eatFee, "Not enough ETH to feed the Tama");
+        foodToken = IERC20(tamaFoodAddress);
+        require(
+            !foodToken.transferFrom(msg.sender, address(this), eatFee),
+            "Not enough TamaFood sent. Maybe not approved?"
+        );
         gameData[tokenId].lastEat = block.timestamp;
         gameData[tokenId].counter += eatPoints;
         emit tokenFeeded(
@@ -177,21 +185,14 @@ contract Tama is ERC721, Ownable {
     }
 }
 
-contract TamaToken is ERC20, Ownable {
-    address public minter;
-
+contract TamaFood is ERC20, Ownable {
     constructor(
         address _minter
-    ) ERC20("TamaToken", "TATK") Ownable(msg.sender) {
-        minter = _minter;
-    }
+    ) ERC20("TamaFood", "TAFOO") Ownable(msg.sender) {}
 
-    function mint(address to, uint256 amount) public {
-        require(msg.sender == minter, "You can't mint this token");
+    function mint(address to, uint256 amount) public payable {
         _mint(to, amount);
     }
 
-    function setMinter(address _minter) public onlyOwner {
-        minter = _minter;
-    }
+    // Add pricing structure
 }
