@@ -45,15 +45,15 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",
-    "erc721a": "^4.2.3"
+    "erc721a": "^4.2.3",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
+    "lint-staged": "^13.0.3",
     "@nomicfoundation/hardhat-toolbox-viem": "^2.0.0",
     "hardhat": "^2.20.1"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",
-    "erc721a": "^4.2.3"
+    "erc721a": "^4.2.3",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3"
   }
