@@ -16,7 +16,7 @@ contract Tama is ERC721, Ownable {
     uint256 public playPoints = 10;
     uint256 public lv1Trigger = 100;
     uint256 public lv2Trigger = 500;
-    uint256 public eatFee = 0.05 ether;
+    uint256 public eatFee = 0.001 ether;
     uint256 private _nextTokenId;
 
     event levelUp(uint256 tokenId, uint8 newLevel);
