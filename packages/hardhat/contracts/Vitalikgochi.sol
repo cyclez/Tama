@@ -41,6 +41,7 @@ contract Vitalikgochi is ERC721, Ownable {
 
     constructor()
         ERC721("Vitalikgotchi", "VGI")
+        Ownable(msg.sender)
     {
         for (uint256 i = 0; i < fastFive.length; i++) {
             fastFive[i] = address(0);
