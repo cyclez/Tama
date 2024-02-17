@@ -16,6 +16,7 @@ import {
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
   const [amount, setNewAmount] = useState(BigInt(1));
+  const [foodAmount, setNewFoodAmount] = useState(BigInt(1));
   const [selectedTokenID, setTokenID] = useState(BigInt(0));
 
   const { writeAsync: mintTama } = useScaffoldContractWrite({
@@ -27,6 +28,12 @@ const Home: NextPage = () => {
 
   const { data: balanceOf } = useScaffoldContractRead({
     contractName: "Tama",
+    functionName: "balanceOf",
+    args: [connectedAddress],
+  });
+
+  const { data: balanceOfERC20 } = useScaffoldContractRead({
+    contractName: "TamaFood",
     functionName: "balanceOf",
     args: [connectedAddress],
   });
@@ -53,7 +60,6 @@ const Home: NextPage = () => {
     contractName: "Tama",
     functionName: "eat",
     args: [tokenID],
-    value: BigInt(0),//use here ERC20 token
   });
 
   const { writeAsync: play } = useScaffoldContractWrite({
@@ -66,6 +72,15 @@ const Home: NextPage = () => {
     contractName: "TamaFood",
     functionName: "mint",
     args: [connectedAddress],
+    value: foodAmount,
+  });
+
+  const { data: tamaContractData } = useDeployedContractInfo("Tama");
+
+  const { writeAsync: approveTamaFood } = useScaffoldContractWrite({
+    contractName: "TamaFood",
+    functionName: "approve",
+    args: [tamaContractData?.address, BigInt(500000000000000000000)]
   });
 
   const isDead = gameData ? gameData[0] : false;
@@ -109,11 +124,19 @@ const Home: NextPage = () => {
           <button className="btn btn-primary" onClick={start} disabled={startTime != BigInt(0)}>
             START
           </button>
-          <br />
+        </div>
+        <div className="p-5">
           <button className="btn btn-primary" onClick={play}>
             PLAY
           </button>
-          <button className="btn btn-primary">
+        </div>
+        <div className="p-5">
+          <button className="btn btn-primary" onClick={approveTamaFood}>
+            APPROVE EAT
+          </button>
+        </div>
+        <div className="p-5">
+          <button className="btn btn-primary" onClick={eat}>
             EAT
           </button>
         </div>
@@ -129,11 +152,14 @@ const Home: NextPage = () => {
         </div>
 
         <div className="p-5">
+        <div className="text-sm font-semibold">
+          Number of TAMAFOOD owned: {balanceOfERC20?.toString()}
+        </div>
           <input
-            value={amount.toString()}
-            placeholder="Type here"
+            value={foodAmount.toString()}
+            placeholder="1000 wei for 1 TAMA"
             className="input"
-            onChange={(e) => setNewAmount(BigInt(e.target.value))}
+            onChange={(e) => setNewFoodAmount(BigInt(e.target.value))}
           />
           <button className="btn btn-primary" onClick={mintTamaFood}>
             MINT TAMAFOOD

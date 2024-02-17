@@ -53,10 +53,11 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const yourContract = await hre.ethers.getContract<Contract>("Tama");
+  const tamaContract = await hre.ethers.getContract<Contract>("Tama");
   console.log("👋 Tama is deployed!");
-  const yourContract2 = await hre.ethers.getContract<Contract>("TamaFood");
+  const tamaFoodContract = await hre.ethers.getContract<Contract>("TamaFood");
   console.log("👋 Tamafood is deployed!");
+  const txHash = await tamaContract.setTamaFoodAddress(tamaFoodContract.getAddress());
 };
 
 export default deployYourContract;

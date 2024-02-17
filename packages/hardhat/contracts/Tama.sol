@@ -19,7 +19,7 @@ contract Tama is ERC721, Ownable, ERC721Enumerable {
 	uint256 public playPoints = 10;
 	uint256 public lv1Trigger = 100;
 	uint256 public lv2Trigger = 500;
-	uint256 public eatFee = 500 ether; //based on TamaFood Token
+	uint256 public eatFee = 500 ether;//based on TamaFood Token
 	uint256 private _nextTokenId;
 
 	IERC20 foodToken;
@@ -119,8 +119,8 @@ contract Tama is ERC721, Ownable, ERC721Enumerable {
 	function eat(uint256 tokenId) public payable gameChecks(tokenId) {
 		foodToken = IERC20(tamaFoodAddress);
 		require(
-			!foodToken.transferFrom(msg.sender, address(this), eatFee),
-			"Not enough TamaFood sent. Maybe not approved?"
+			foodToken.transferFrom(msg.sender, address(this), eatFee),
+			"Not enough TamaFood sent."
 		);
 		gameData[tokenId].lastEat = block.timestamp;
 		gameData[tokenId].counter += eatPoints;
@@ -185,6 +185,10 @@ contract Tama is ERC721, Ownable, ERC721Enumerable {
 	function setEatFee(uint256 _eatFee) public onlyOwner {
 		eatFee = _eatFee;
 	}
+
+	function setTamaFoodAddress(address _tamaFoodAddress) public {
+        tamaFoodAddress = _tamaFoodAddress;
+    }
 
 	// The following functions are overrides required ERC721Enumerable.
 
