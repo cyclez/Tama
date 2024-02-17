@@ -2,66 +2,74 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 
-/**
- * Deploys a contract named "YourContract" using the deployer account and
- * constructor arguments set to the deployer address
- *
- * @param hre HardhatRuntimeEnvironment object.
- */
 const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  /*
-    On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
 
-    When deploying to live networks (e.g `yarn deploy --network goerli`), the deployer account
-    should have sufficient balance to pay for the gas fees for contract creation.
-
-    You can generate a random account with `yarn generate` which will fill DEPLOYER_PRIVATE_KEY
-    with a random private key in the .env file (then used on hardhat.config.ts)
-    You can run the `yarn account` command to check your balance in every network.
-  */
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
   await deploy("Tama", {
     from: deployer,
-    // Contract constructor arguments
     args: [],
     log: true,
-    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
-    // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
 
   await deploy("TamaFood", {
     from: deployer,
-    // Contract constructor arguments
     args: [],
     log: true,
-    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
-    // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
 
-  await deploy("Vitalikgochi", {
+  await deploy("Character0", {
     from: deployer,
-    // Contract constructor arguments
     args: [],
     log: true,
-    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
-    // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
 
-  // Get the deployed contract to interact with it after deploying.
+  await deploy("Character1", {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+  });
+
+  await deploy("Character2", {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+  });
+
+  await deploy("Character3", {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+  });
+
   const tamaContract = await hre.ethers.getContract<Contract>("Tama");
   console.log("👋 Tama is deployed!");
   const tamaFoodContract = await hre.ethers.getContract<Contract>("TamaFood");
   console.log("👋 Tamafood is deployed!");
+
+  const character0 = await hre.ethers.getContract<Contract>("Character0");
+  console.log("👋 Character0 is deployed!");
+  const character1 = await hre.ethers.getContract<Contract>("Character1");
+  console.log("👋 Character1 is deployed!");
+  const character2 = await hre.ethers.getContract<Contract>("Character2");
+  console.log("👋 Character2 is deployed!");
+  const character3 = await hre.ethers.getContract<Contract>("Character3");
+  console.log("👋 Character3 is deployed!");
+
   const txHash = await tamaContract.setTamaFoodAddress(tamaFoodContract.getAddress());
+  const txHash2 = await tamaContract.setCharacters(
+    character0.getAddress(),
+    character1.getAddress(),
+    character2.getAddress(),
+    character3.getAddress()
+  );
 };
 
 export default deployYourContract;
-
-// Tags are useful if you have multiple deploy files and only want to run one of them.
-// e.g. yarn deploy --tags YourContract
-deployYourContract.tags = ["YourContract"];

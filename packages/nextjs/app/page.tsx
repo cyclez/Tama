@@ -23,7 +23,7 @@ const Home: NextPage = () => {
     contractName: "Tama",
     functionName: "purchase",
     args: [amount],
-    value: BigInt(1000000000000000),
+    value: BigInt(10000000000000000),
   });
 
   const { data: balanceOf } = useScaffoldContractRead({
@@ -83,13 +83,12 @@ const Home: NextPage = () => {
     args: [tamaContractData?.address, BigInt(500000000000000000000)]
   });
 
-  const isDead = gameData ? gameData[0] : false;
-  const level = gameData ? gameData[1] : 0;
-  const startTime = gameData ? gameData[2] : 0;
-  const birthDate = new Date(Number(gameData ? gameData[2] : 0) * 1000)
-  const lastEat = new Date(Number(gameData ? gameData[3] : 0) * 1000);
-  const lastPlay = new Date(Number(gameData ? gameData[4] : 0) * 1000);
-  const counter = gameData ? gameData[5] : 0;
+  const level = gameData ? gameData[0] : 0;
+  const startTime = gameData ? gameData[1] : 0;
+  const birthDate = new Date(Number(gameData ? gameData[1] : 0) * 1000)
+  const lastEat = new Date(Number(gameData ? gameData[2] : 0) * 1000);
+  const lastPlay = new Date(Number(gameData ? gameData[3] : 0) * 1000);
+  const counter = gameData ? gameData[4] : 0;
 
 
   return (
@@ -117,9 +116,9 @@ const Home: NextPage = () => {
           <button className="btn btn-primary" onClick={mintTama} disabled={Number(balanceOf)==2}>
             MINT
           </button>
-          {Number(balanceOf)==2 &&<p>You have already 2 TAMA in your wallet!</p>}
+          {Number(balanceOf)==1 &&<p>You are already a TAMA holder!</p>}
         </div>
-        TAMA TOKEN ID <strong>{tokenID?.toString()}</strong>
+        TAMA TOKEN ID <strong>{balanceOf && balanceOf > 0 ? tokenID?.toString() : "none"}</strong>
         <div className="p-5">
           <button className="btn btn-primary" onClick={start} disabled={startTime != BigInt(0)}>
             START
