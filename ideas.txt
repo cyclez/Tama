@@ -33,3 +33,28 @@ color settato in base ad un numero random
 Fun Counter ()
 Eat Counter (sazio = 10, non mangia più)
 
+
+Character1 abi.encode: 0x5AE6CbB9eeE82b920184c1406703aB7b02dcB8a8 OK READ - NO COLORS
+Character1 colors hardcode: 0xD96aa1F9d807842E9a57223893DdcfEf71295a42
+Character1 hex colors: 0xCead78416F99F86b4f01646AF3bBF51c4750E6Ec
+Character1 hex colors # and no }: 
+
+Tama Json: 0x1e1D3FE970514e02C89D629CfB1d6a08C7193416 OK
+
+
+
+NEW SET -OK-
+
+Tama JSON:  0xbc8a192988714501A9fe446c3db7B02ea0D4536A
+
+Character1 hex colors # and no }: 0xc2b3B95F13EA37a929a42138920fEE19FE91753a
+Character1 new random method: 0xad0f7229C0327bEFCb7642D924186de24adc4908 OK
+
+4 Characters Set:
+
+Tama: 0x6061dade6AA24e99b4AeeC9Fb7C5c68cAa716860
+Char0: 0xCa4a453285A3a36e096Ab24A82732AfEdD180325
+Char1: 0x7C39c70995a81Db02eB351e85aEf40fa6c0C1D80
+Char2: 0x68a58F79D13926C514a9D828C0E4b7AA3715da85
+Char3: 0x967dDFce132eB2031378802E5f9247852C59D778
+TamaFood: 0xe4E80710aFc464b9cf46D8B8B168C4B1d50bD987
