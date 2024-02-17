@@ -116,7 +116,7 @@ const Home: NextPage = () => {
           <button className="btn btn-primary" onClick={mintTama} disabled={Number(balanceOf)==2}>
             MINT
           </button>
-          {Number(balanceOf)==1 &&<p>You are already a TAMA holder!</p>}
+          {Number(balanceOf)==1 &&<p>You have already 2 TAMA in your wallet!</p>}
         </div>
         TAMA TOKEN ID <strong>{balanceOf && balanceOf > 0 ? tokenID?.toString() : "none"}</strong>
         <div className="p-5">
