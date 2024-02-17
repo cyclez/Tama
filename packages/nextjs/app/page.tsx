@@ -3,62 +3,159 @@
 import Link from "next/link";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
+import { useState } from "react";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Address } from "~~/components/scaffold-eth";
+import { Address, Balance } from "~~/components/scaffold-eth";
+import {
+  useAccountBalance,
+  useDeployedContractInfo,
+  useScaffoldContractRead,
+  useScaffoldContractWrite,
+} from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+  const [amount, setNewAmount] = useState(BigInt(1));
+  const [selectedTokenID, setTokenID] = useState(BigInt(0));
+
+  const { writeAsync: mintTama } = useScaffoldContractWrite({
+    contractName: "Tama",
+    functionName: "purchase",
+    args: [amount],
+    value: BigInt(1000000000000000),
+  });
+
+  const { data: balanceOf } = useScaffoldContractRead({
+    contractName: "Tama",
+    functionName: "balanceOf",
+    args: [connectedAddress],
+  });
+
+  const { data: tokenID } = useScaffoldContractRead({
+    contractName: "Tama",
+    functionName: "tokenOfOwnerByIndex",
+    args: [connectedAddress, BigInt(0)],
+  });
+
+  const { data: gameData } = useScaffoldContractRead({
+    contractName: "Tama",
+    functionName: "gameData",
+    args: [tokenID],
+  });
+
+  const { writeAsync: start } = useScaffoldContractWrite({
+    contractName: "Tama",
+    functionName: "start",
+    args: [tokenID],
+  });
+
+  const { writeAsync: eat } = useScaffoldContractWrite({
+    contractName: "Tama",
+    functionName: "eat",
+    args: [tokenID],
+    value: BigInt(0),//use here ERC20 token
+  });
+
+  const { writeAsync: play } = useScaffoldContractWrite({
+    contractName: "Tama",
+    functionName: "play",
+    args: [tokenID],
+  });
+
+  const { writeAsync: mintTamaFood } = useScaffoldContractWrite({
+    contractName: "TamaFood",
+    functionName: "mint",
+    args: [connectedAddress],
+  });
+
+  const isDead = gameData ? gameData[0] : false;
+  const level = gameData ? gameData[1] : 0;
+  const startTime = gameData ? gameData[2] : 0;
+  const birthDate = new Date(Number(gameData ? gameData[2] : 0) * 1000)
+  const lastEat = new Date(Number(gameData ? gameData[3] : 0) * 1000);
+  const lastPlay = new Date(Number(gameData ? gameData[4] : 0) * 1000);
+  const counter = gameData ? gameData[5] : 0;
+
 
   return (
     <>
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="px-5">
           <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
+            <span className="block text-2xl mb-2">Welcome to TAMA</span>
           </h1>
-          <div className="flex justify-center items-center space-x-2">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
-          </div>
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
+        </div>
+
+        <div className="text-sm font-semibold">
+          Number of TAMA owned: {balanceOf?.toString()}
+        </div>
+
+
+        <div className="p-5">
+          <input
+            value={amount.toString()}
+            placeholder="Type here"
+            className="input"
+            onChange={(e) => setNewAmount(BigInt(e.target.value))}
+            disabled={Number(balanceOf)==2}
+          />
+          <button className="btn btn-primary" onClick={mintTama} disabled={Number(balanceOf)==2}>
+            MINT
+          </button>
+          {Number(balanceOf)==2 &&<p>You have already 2 TAMA in your wallet!</p>}
+        </div>
+        TAMA TOKEN ID <strong>{tokenID?.toString()}</strong>
+        <div className="p-5">
+          <button className="btn btn-primary" onClick={start} disabled={startTime != BigInt(0)}>
+            START
+          </button>
+          <br />
+          <button className="btn btn-primary" onClick={play}>
+            PLAY
+          </button>
+          <button className="btn btn-primary">
+            EAT
+          </button>
+        </div>
+
+        <div className="p-5">
+          POINTS <strong>{counter.toString()}</strong>
+          <br />
+          BIRTH DATE <strong>{birthDate.toDateString()}</strong>
+          <br />
+          LAST EAT <strong>{Number(gameData ? gameData[3] : 0) == 0 ? "NEVER EATEN ;(" : lastEat.toDateString()}</strong>
+          <br />
+          LAST PLAY <strong>{lastPlay.toDateString()}</strong>
+        </div>
+
+        <div className="p-5">
+          <input
+            value={amount.toString()}
+            placeholder="Type here"
+            className="input"
+            onChange={(e) => setNewAmount(BigInt(e.target.value))}
+          />
+          <button className="btn btn-primary" onClick={mintTamaFood}>
+            MINT TAMAFOOD
+          </button>
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
             <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
+              ⚒️⚙️
               <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contract
-                </Link>{" "}
-                tab.
+                <strong>MINT</strong>
+                <br />
+                your TAMA token
               </p>
             </div>
             <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
+              👉👈
               <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
+                <strong>PLAY</strong>
+                <br />
+                your TAMA tokens
               </p>
             </div>
           </div>

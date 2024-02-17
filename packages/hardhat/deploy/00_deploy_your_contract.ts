@@ -32,6 +32,16 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     autoMine: true,
   });
 
+  await deploy("TamaFood", {
+    from: deployer,
+    // Contract constructor arguments
+    args: [],
+    log: true,
+    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
+    // automatically mining the contract deployment transaction. There is no effect on live networks.
+    autoMine: true,
+  });
+
   await deploy("Vitalikgochi", {
     from: deployer,
     // Contract constructor arguments
@@ -45,8 +55,8 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   // Get the deployed contract to interact with it after deploying.
   const yourContract = await hre.ethers.getContract<Contract>("Tama");
   console.log("👋 Tama is deployed!");
-  const yourContract2 = await hre.ethers.getContract<Contract>("Vitalikgochi");
-  console.log("👋 Vitalikgochi is deployed!");
+  const yourContract2 = await hre.ethers.getContract<Contract>("TamaFood");
+  console.log("👋 Tamafood is deployed!");
 };
 
 export default deployYourContract;

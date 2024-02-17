@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Tama is ERC721, Ownable {
-	uint256 public mintFee = 0.01 ether;
+
+contract Tama is ERC721, Ownable, ERC721Enumerable {
+	uint256 public mintFee = 0.001 ether;
 	uint256 public maxMint = 2;
 	uint256 public deathTime = 10 minutes;
 	uint256 public eatTime = 5 minutes;
@@ -185,22 +185,30 @@ contract Tama is ERC721, Ownable {
 	function setEatFee(uint256 _eatFee) public onlyOwner {
 		eatFee = _eatFee;
 	}
-}
 
-contract TamaFood is ERC20, Ownable {
-	uint256 pricePerEth = 1000;
+	// The following functions are overrides required ERC721Enumerable.
 
-	//bool freeTokens = false;
+    function _update(address to, uint256 tokenId, address auth)
+        internal
+        override(ERC721, ERC721Enumerable)
+        returns (address)
+    {
+        return super._update(to, tokenId, auth);
+    }
 
-	constructor() ERC20("TamaFood", "TAFOO") Ownable(msg.sender) {}
+    function _increaseBalance(address account, uint128 value)
+        internal
+        override(ERC721, ERC721Enumerable)
+    {
+        super._increaseBalance(account, value);
+    }
 
-	function mint(address to) public payable {
-		require(msg.value != 0, "No ETH sent");
-		uint256 amount = (msg.value * pricePerEth);
-		_mint(to, amount);
-	}
-
-	function setPricePerEth(uint256 _pricePerEth) external onlyOwner {
-		pricePerEth = _pricePerEth;
-	}
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
 }
