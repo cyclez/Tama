@@ -67,36 +67,47 @@ const Home: NextPage = () => {
 
   const startTime = gameData ? gameData[1] : 0;
 
-
   return (
     <>
-      <div className="flex items-center flex-col flex-grow pt-10">
-        
-        <div className="text-sm font-semibold">
-          Number of TAMA owned: {balanceOf?.toString()}
-          TAMA TOKEN ID <strong>{balanceOf && balanceOf > 0 ? tokenID?.toString() : "none"}</strong>
-        </div>
+        <div className="flex items-center flex-col flex-grow pt-10">
+        <h1 className="text-4xl font-bold text-gray-900">PLAY WITH TAMA</h1>
 
-        <div className="p-5">
-          <button className="btn btn-primary" onClick={start} disabled={startTime != BigInt(0)}>
-            OPEN EGG
-          </button>
-        </div>
-        <div className="p-5">
-          <button className="btn btn-primary" onClick={play}>
-            PLAY
-          </button>
-        </div>
-        <div className="p-5">
-          <button className="btn btn-primary" onClick={approveTamaFood}>
-            APPROVE EAT
-          </button>
-        </div>
-        <div className="p-5">
-          <button className="btn btn-primary" onClick={eat}>
-            EAT
-          </button>
-        </div>
+            <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
+                
+                    <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
+                        <div className="p-5">
+                            <button className="btn btn-primary" onClick={start} disabled={startTime != BigInt(0)}>
+                                OPEN EGG 🔨
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
+                        <div className="p-5">
+                            <button className="btn btn-primary" onClick={play} disabled={startTime == BigInt(0)}>
+                                LET IT PLAY 🛝
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
+                        <div className="p-5">
+                            <button className="btn btn-primary" onClick={approveTamaFood} disabled={startTime == BigInt(0)}>
+                                GIVE IT MONEY 💵
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
+                        <div className="p-5">
+                            <button className="btn btn-primary" onClick={eat} disabled={startTime == BigInt(0)}>
+                                LET IT EAT 🍴
+                            </button>
+                        </div>
+                    </div>
+               
+            </div>
+        </div> 
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
@@ -121,8 +132,7 @@ const Home: NextPage = () => {
                 </p>
                 </div>
             </div>
-            </div>
-      </div>
+        </div>
     </>
   );
 };

@@ -103,8 +103,8 @@ const Home: NextPage = () => {
 
         { balanceOf == BigInt(0) &&
         <>
-          <div className="p-5">
-            <p>GET YOUT TAMA</p>
+          <div className="flex items-center flex-col flex-grow pt-10">
+            <h1 className="text-4xl font-bold text-gray-900">GET YOUT TAMA</h1>
             <button className="btn btn-primary" onClick={mintTama} disabled={Number(balanceOf)==2}>
               MINT NOW
             </button>

@@ -48,24 +48,22 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="text-sm font-semibold">
-          Number of TAMA owned: {balanceOf?.toString()}
-          TAMA TOKEN ID <strong>{balanceOf && balanceOf > 0 ? tokenID?.toString() : "none"}</strong>
-        </div>
-
+        <h1 className="text-4xl font-bold text-gray-900">TAMA FOOD SHOP</h1>
         <div className="p-5">
-          <div className="text-sm font-semibold">
-          Number of TAMAFOOD owned: {balanceOfERC20?.toString()}
-          </div>
           <input
             value={foodAmount.toString()}
             placeholder="1000 wei for 1 TAMA"
             className="input"
+            size={5}
             onChange={(e) => setNewFoodAmount(BigInt(e.target.value))}
-          />
+          />&nbsp;&nbsp;&nbsp;WEI
+          <br/><br/>
           <button className="btn btn-primary" onClick={mintTamaFood}>
             MINT TAMAFOOD
           </button>
+          <p>1 ETHER for 1000 TAMA</p>
+          <p>1 ETHER = 1000000000000000000 WEI</p>
+
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
