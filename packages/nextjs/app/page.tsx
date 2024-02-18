@@ -49,7 +49,6 @@ const Home: NextPage = () => {
     window.location.href = 'tamafoodmint';
   }
 
-  const level = Number(gameData ? gameData[0] : 0);
   const birthDate = new Date(Number(gameData ? gameData[1] : 0) * 1000);
   const lastEat = new Date(Number(gameData ? gameData[2] : 0) * 1000);
   const lastPlay = new Date(Number(gameData ? gameData[3] : 0) * 1000);

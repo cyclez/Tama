@@ -1,6 +1,7 @@
 "use client";
 
 import type { NextPage } from "next";
+import { MouseEventHandler } from "react";
 import { useAccount } from "wagmi";
 
 import {
@@ -11,12 +12,6 @@ import {
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-
-  const { data: balanceOf } = useScaffoldContractRead({
-    contractName: "Tama",
-    functionName: "balanceOf",
-    args: [connectedAddress],
-  });
 
   const { data: tokenID } = useScaffoldContractRead({
     contractName: "Tama",
@@ -30,11 +25,19 @@ const Home: NextPage = () => {
     args: [tokenID],
   });
 
+  const handleStart: MouseEventHandler<HTMLButtonElement> = () => {
+    return start;
+  };
+
   const { writeAsync: start } = useScaffoldContractWrite({
     contractName: "Tama",
     functionName: "start",
     args: [tokenID],
   });
+
+  const handleEat: MouseEventHandler<HTMLButtonElement> = () => {
+    return eat;
+  };
 
   const { writeAsync: eat } = useScaffoldContractWrite({
     contractName: "Tama",
@@ -42,14 +45,22 @@ const Home: NextPage = () => {
     args: [tokenID],
   });
 
+
+  const handlePlay: MouseEventHandler<HTMLButtonElement> = () => {
+    return play;
+  };
+
   const { writeAsync: play } = useScaffoldContractWrite({
     contractName: "Tama",
     functionName: "play",
     args: [tokenID],
   });
 
-
   const { data: tamaContractData } = useDeployedContractInfo("Tama");
+
+  const handleApproveTamaFood: MouseEventHandler<HTMLButtonElement> = () => {
+    return approveTamaFood;
+  };
 
   const { writeAsync: approveTamaFood } = useScaffoldContractWrite({
     contractName: "TamaFood",
@@ -76,7 +87,7 @@ const Home: NextPage = () => {
                 
                     <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
                         <div className="p-5">
-                            <button className="btn btn-primary" onClick={start} disabled={startTime != BigInt(0)}>
+                            <button className="btn btn-primary" onClick={handleStart} disabled={startTime != BigInt(0)}>
                                 OPEN EGG 🔨
                             </button>
                         </div>
@@ -84,7 +95,7 @@ const Home: NextPage = () => {
                     
                     <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
                         <div className="p-5">
-                            <button className="btn btn-primary" onClick={play} disabled={startTime == BigInt(0)}>
+                            <button className="btn btn-primary" onClick={handlePlay} disabled={startTime == BigInt(0)}>
                                 LET IT PLAY 🛝
                             </button>
                         </div>
@@ -92,7 +103,7 @@ const Home: NextPage = () => {
 
                     <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
                         <div className="p-5">
-                            <button className="btn btn-primary" onClick={approveTamaFood} disabled={startTime == BigInt(0)}>
+                            <button className="btn btn-primary" onClick={handleApproveTamaFood} disabled={startTime == BigInt(0)}>
                                 GIVE IT MONEY 💵
                             </button>
                         </div>
@@ -100,7 +111,7 @@ const Home: NextPage = () => {
 
                     <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
                         <div className="p-5">
-                            <button className="btn btn-primary" onClick={eat} disabled={startTime == BigInt(0)}>
+                            <button className="btn btn-primary" onClick={handleEat} disabled={startTime == BigInt(0)}>
                                 LET IT EAT 🍴
                             </button>
                         </div>

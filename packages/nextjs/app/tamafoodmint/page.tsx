@@ -2,7 +2,7 @@
 
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import {
   useScaffoldContractRead,
   useScaffoldContractWrite,
@@ -12,23 +12,21 @@ const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
   const [foodAmount, setNewFoodAmount] = useState(BigInt(1));
 
-  const { data: balanceOf } = useScaffoldContractRead({
-    contractName: "Tama",
-    functionName: "balanceOf",
-    args: [connectedAddress],
-  });
+  // const { data: balanceOfERC20 } = useScaffoldContractRead({
+  //   contractName: "TamaFood",
+  //   functionName: "balanceOf",
+  //   args: [connectedAddress],
+  // });
 
-  const { data: balanceOfERC20 } = useScaffoldContractRead({
-    contractName: "TamaFood",
-    functionName: "balanceOf",
-    args: [connectedAddress],
-  });
+  // const { data: tokenID } = useScaffoldContractRead({
+  //   contractName: "Tama",
+  //   functionName: "tokenOfOwnerByIndex",
+  //   args: [connectedAddress, BigInt(0)],
+  // });
 
-  const { data: tokenID } = useScaffoldContractRead({
-    contractName: "Tama",
-    functionName: "tokenOfOwnerByIndex",
-    args: [connectedAddress, BigInt(0)],
-  });
+  const handleMintTamaFood: MouseEventHandler<HTMLButtonElement> = () => {
+    return mintTamaFood;
+  };
 
   const { writeAsync: mintTamaFood } = useScaffoldContractWrite({
     contractName: "TamaFood",
@@ -58,7 +56,7 @@ const Home: NextPage = () => {
             onChange={(e) => setNewFoodAmount(BigInt(e.target.value))}
           />&nbsp;&nbsp;&nbsp;WEI
           <br/><br/>
-          <button className="btn btn-primary" onClick={mintTamaFood}>
+          <button className="btn btn-primary" onClick={handleMintTamaFood}>
             MINT TAMAFOOD
           </button>
           <p>1 ETHER for 1000 TAMA</p>
