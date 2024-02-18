@@ -45,24 +45,27 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="flex items-center flex-col flex-grow pt-10">
-        <h1 className="text-4xl font-bold text-gray-900">TAMA FOOD SHOP</h1>
-        <div className="p-5">
-          <input
-            value={foodAmount.toString()}
-            placeholder="1000 wei for 1 TAMA"
-            className="input"
-            size={5}
-            onChange={(e) => setNewFoodAmount(BigInt(e.target.value))}
-          />&nbsp;&nbsp;&nbsp;WEI
-          <br/><br/>
-          <button className="btn btn-primary" onClick={handleMintTamaFood}>
-            MINT TAMAFOOD
-          </button>
-          <p>1 ETHER for 1000 TAMA</p>
-          <p>1 ETHER = 1000000000000000000 WEI</p>
-
-        </div>
-
+        {!connectedAddress && 
+          <h1 className="text-4xl font-bold text-gray-900">CONNECT YOUR WALLET &</h1>
+        }
+        <h1 className="text-4xl font-bold text-gray-900">BUY TAMA FOOD</h1>
+        {connectedAddress && 
+            <div className="p-5">
+              <input
+                value={foodAmount.toString()}
+                placeholder="1000 wei for 1 TAMA"
+                className="input"
+                size={5}
+                onChange={(e) => setNewFoodAmount(BigInt(e.target.value))}
+              />&nbsp;&nbsp;&nbsp;WEI
+              <br/><br/>
+              <button className="btn btn-primary" onClick={handleMintTamaFood}>
+                MINT TAMAFOOD
+              </button>
+              <p>1 ETHER for 1000 TAMA</p>
+              <p>1 ETHER = 1000000000000000000 WEI</p>
+            </div>
+        }
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
                 <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">

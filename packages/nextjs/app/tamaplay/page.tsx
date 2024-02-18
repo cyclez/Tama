@@ -81,13 +81,14 @@ const Home: NextPage = () => {
   return (
     <>
         <div className="flex items-center flex-col flex-grow pt-10">
+        {!connectedAddress &&
+          <h1 className="text-4xl font-bold text-gray-900">CONNECT YOUR WALLET &</h1>
+        }
         <h1 className="text-4xl font-bold text-gray-900">PLAY WITH TAMA</h1>
-
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-                
                     <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
                         <div className="p-5">
-                            <button className="btn btn-primary" onClick={handleStart} disabled={startTime != BigInt(0)}>
+                            <button className="btn btn-primary" onClick={handleStart} disabled={!connectedAddress || startTime != BigInt(0)}>
                                 OPEN EGG 🔨
                             </button>
                         </div>

@@ -80,7 +80,14 @@ const Home: NextPage = () => {
     <>
       <div className="flex items-center flex-col flex-grow pt-10">
 
-        { balanceOf != BigInt(0) &&
+      { !connectedAddress &&
+        <>
+          <h1 className="text-4xl font-bold text-gray-900">CONNECT YOUR WALLET {tokenIDDisplay}</h1>
+          <h1 className="text-4xl font-bold text-gray-900">& MINT A TAMA {tokenIDDisplay}</h1>
+        </>
+        }
+
+        { connectedAddress && balanceOf != BigInt(0) &&
         <>
           <h1 className="text-4xl font-bold text-gray-900">My TAMA {tokenIDDisplay}</h1>
           <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
