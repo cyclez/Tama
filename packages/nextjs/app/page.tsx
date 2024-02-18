@@ -1,13 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { useState } from "react";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Address, Balance } from "~~/components/scaffold-eth";
 import {
-  useAccountBalance,
   useDeployedContractInfo,
   useScaffoldContractRead,
   useScaffoldContractWrite,
@@ -15,25 +11,16 @@ import {
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const [amount, setNewAmount] = useState(BigInt(1));
-  const [foodAmount, setNewFoodAmount] = useState(BigInt(1));
-  const [selectedTokenID, setTokenID] = useState(BigInt(0));
 
   const { writeAsync: mintTama } = useScaffoldContractWrite({
     contractName: "Tama",
     functionName: "purchase",
-    args: [amount],
+    args: [BigInt(1)],
     value: BigInt(10000000000000000),
   });
 
   const { data: balanceOf } = useScaffoldContractRead({
     contractName: "Tama",
-    functionName: "balanceOf",
-    args: [connectedAddress],
-  });
-
-  const { data: balanceOfERC20 } = useScaffoldContractRead({
-    contractName: "TamaFood",
     functionName: "balanceOf",
     args: [connectedAddress],
   });
@@ -56,38 +43,7 @@ const Home: NextPage = () => {
     args: [tokenID],
   });
 
-  const { writeAsync: start } = useScaffoldContractWrite({
-    contractName: "Tama",
-    functionName: "start",
-    args: [tokenID],
-  });
-
-  const { writeAsync: eat } = useScaffoldContractWrite({
-    contractName: "Tama",
-    functionName: "eat",
-    args: [tokenID],
-  });
-
-  const { writeAsync: play } = useScaffoldContractWrite({
-    contractName: "Tama",
-    functionName: "play",
-    args: [tokenID],
-  });
-
-  const { writeAsync: mintTamaFood } = useScaffoldContractWrite({
-    contractName: "TamaFood",
-    functionName: "mint",
-    args: [connectedAddress],
-    value: foodAmount,
-  });
-
   const { data: tamaContractData } = useDeployedContractInfo("Tama");
-
-  const { writeAsync: approveTamaFood } = useScaffoldContractWrite({
-    contractName: "TamaFood",
-    functionName: "approve",
-    args: [tamaContractData?.address, BigInt(500000000000000000000)]
-  });
 
   function goTamaplay(){
     window.location.href = 'tamaplay';
@@ -97,8 +53,6 @@ const Home: NextPage = () => {
     window.location.href = 'tamafoodmint';
   }
 
-  const level = gameData ? gameData[0] : 0;
-  const startTime = gameData ? gameData[1] : 0;
   const birthDate = new Date(Number(gameData ? gameData[1] : 0) * 1000)
   const lastEat = new Date(Number(gameData ? gameData[2] : 0) * 1000);
   const lastPlay = new Date(Number(gameData ? gameData[3] : 0) * 1000);
