@@ -1,8 +1,10 @@
 # Tama - your decentralized gochi
 
-A decentralized Tamagochi built for the Urbe.eth campus 2024
+A decentralized Tamagochi built @ Urbe campus Hackaton 2024 - Rome
 
-The priject is based on the awesome template https://github.com/kmjones1979/full-stack-dapp-workshop
+Play it online @ https://tama-damianofds.vercel.app/
+
+Supported Chain - Arbitrum sepolia
 
 ## Requirements
 
@@ -35,4 +37,8 @@ Do whathever in the requirements, than go to:
 `localhost:3000` for scaffold.eth UI
 
 `localhost:8000` for the graphQL UI 
+
+## Credits
+
+The project is based on the awesome template https://github.com/kmjones1979/full-stack-dapp-workshop
 
