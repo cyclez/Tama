@@ -4,7 +4,6 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { MouseEventHandler, useState } from "react";
 import {
-  useScaffoldContractRead,
   useScaffoldContractWrite,
 } from "~~/hooks/scaffold-eth";
 
