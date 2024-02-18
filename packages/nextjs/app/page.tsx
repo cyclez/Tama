@@ -1,6 +1,7 @@
 "use client";
 
 import type { NextPage } from "next";
+import { MouseEventHandler } from "react";
 import { useAccount } from "wagmi";
 import {
   useScaffoldContractRead,
@@ -9,6 +10,10 @@ import {
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+
+  const handleMintTama: MouseEventHandler<HTMLButtonElement> = () => {
+    return mintTama;
+  };
 
   const { writeAsync: mintTama } = useScaffoldContractWrite({
     contractName: "Tama",
@@ -104,7 +109,7 @@ const Home: NextPage = () => {
         <>
           <div className="flex items-center flex-col flex-grow pt-10">
             <h1 className="text-4xl font-bold text-gray-900">GET YOUR TAMA</h1>
-            <button className="btn btn-primary" onClick={mintTama} disabled={Number(balanceOf)==2}>
+            <button className="btn btn-primary" onClick={handleMintTama} disabled={Number(balanceOf)==2}>
               MINT NOW
             </button>
             <p>ONLY <strong>0.01</strong> ETH</p>
