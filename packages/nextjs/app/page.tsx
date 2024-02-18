@@ -49,10 +49,12 @@ const Home: NextPage = () => {
     window.location.href = 'tamafoodmint';
   }
 
-  const birthDate = new Date(Number(gameData ? gameData[1] : 0) * 1000)
+  const level = Number(gameData ? gameData[0] : 0);
+  const birthDate = new Date(Number(gameData ? gameData[1] : 0) * 1000);
   const lastEat = new Date(Number(gameData ? gameData[2] : 0) * 1000);
   const lastPlay = new Date(Number(gameData ? gameData[3] : 0) * 1000);
   const counter = gameData ? gameData[4] : 0;
+  const tokenIDDisplay = tokenID!=undefined ? ("#" + Number(tokenID)) : "";
 
   const firstEncoded = atob((tokenURI || "").replace("data:application/json;base64,", ""));
 
@@ -76,21 +78,26 @@ const Home: NextPage = () => {
 
         { balanceOf != BigInt(0) &&
         <>
-
-          <img height="100px" width="100px" src={uri} alt="The token URI" />
-
-          <div className="text-sm font-semibold">
-            Number of TAMA owned: {balanceOf?.toString()}
-          </div>
-          <div className="p-5">
-            POINTS <strong>{counter.toString()}</strong>
-            <br />
-            BIRTH DATE <strong>{birthDate.toDateString()}</strong>
-            <br />
-            LAST EAT <strong>{Number(gameData ? gameData[3] : 0) == 0 ? "NEVER EATEN ;(" : lastEat.toDateString()}</strong>
-            <br />
-            LAST PLAY <strong>{lastPlay.toDateString()}</strong>
-          </div>
+          <h1 className="text-4xl font-bold text-gray-900">My TAMA {tokenIDDisplay}</h1>
+          <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
+            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl"></div>
+              <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
+                <img height="100px" width="100px" src={uri} alt="The token URI" />
+              </div>
+              <div className="flex flex-col bg-base-100 px-5 py-10 text-center items-center max-w-xs rounded-3xl">
+                <div className="p-5">
+                  LEVEL - <strong>{level}</strong>
+                  <br />
+                  POINTS - <strong>{counter.toString()}</strong>
+                  <br />
+                  BIRTH DATE - <strong>{Number(gameData ? gameData[1] : 0) == 0 ? "NOT BORN YET" : birthDate.toDateString()}</strong>
+                  <br />
+                  LAST EAT - <strong>{Number(gameData ? gameData[2] : 0) == 0 ? "NEVER EATEN 😖" : lastEat.toDateString()}</strong>
+                  <br />
+                  LAST PLAY - <strong>{Number(gameData ? gameData[2] : 0) == 0 ? "NEVER PLAYED 🥹" : lastPlay.toDateString()}</strong>
+                </div>
+              </div>
+            </div>
         </>
         }
 

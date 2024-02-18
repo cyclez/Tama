@@ -79,7 +79,7 @@ const Home: NextPage = () => {
 
         <div className="p-5">
           <button className="btn btn-primary" onClick={start} disabled={startTime != BigInt(0)}>
-            START
+            OPEN EGG
           </button>
         </div>
         <div className="p-5">
