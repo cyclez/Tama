@@ -11,9 +11,7 @@ import {
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const [amount, setNewAmount] = useState(BigInt(1));
   const [foodAmount, setNewFoodAmount] = useState(BigInt(1));
-  const [selectedTokenID, setTokenID] = useState(BigInt(0));
 
   const { data: balanceOf } = useScaffoldContractRead({
     contractName: "Tama",
@@ -33,20 +31,12 @@ const Home: NextPage = () => {
     args: [connectedAddress, BigInt(0)],
   });
 
-  const { data: gameData } = useScaffoldContractRead({
-    contractName: "Tama",
-    functionName: "gameData",
-    args: [tokenID],
-  });
-
   const { writeAsync: mintTamaFood } = useScaffoldContractWrite({
     contractName: "TamaFood",
     functionName: "mint",
     args: [connectedAddress],
     value: foodAmount,
   });
-
-  const { data: tamaContractData } = useDeployedContractInfo("Tama");
 
   function goTamaplay(){
     window.location.href = 'tamaplay';

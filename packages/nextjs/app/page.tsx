@@ -2,9 +2,7 @@
 
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
-import { useState } from "react";
 import {
-  useDeployedContractInfo,
   useScaffoldContractRead,
   useScaffoldContractWrite,
 } from "~~/hooks/scaffold-eth";
@@ -43,8 +41,6 @@ const Home: NextPage = () => {
     args: [tokenID],
   });
 
-  const { data: tamaContractData } = useDeployedContractInfo("Tama");
-
   function goTamaplay(){
     window.location.href = 'tamaplay';
   }
@@ -60,7 +56,7 @@ const Home: NextPage = () => {
 
   const firstEncoded = atob((tokenURI || "").replace("data:application/json;base64,", ""));
 
-  var uri;
+  let uri;
   try {
       uri = JSON.parse(firstEncoded).image;
       console.log("successing parsing");
