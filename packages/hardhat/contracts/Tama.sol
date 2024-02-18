@@ -14,6 +14,7 @@ import "./Character0.sol";
 import "./Character1.sol";
 import "./Character2.sol";
 import "./Character3.sol";
+import "./TamaFood.sol";
 
 error TransferFailed();
 
@@ -22,24 +23,27 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     uint256 public mintFee = 0.01 ether;
     uint256 public maxMint = 1;
     uint256 public eatTime = 5 minutes;
-    uint256 public playTime = 5 minutes;
-    uint256 public eatPoints = 10;
+    uint256 public playTime = 30 seconds;
+    uint256 public eatPoints = 25;
     uint256 public playPoints = 10;
     uint256 public lv1Trigger = 100;
     uint256 public lv2Trigger = 500;
     uint256 public eatFee = 500 ether; //based on TamaFood Token
     uint256 private _nextTokenId;
 
+    //SVG Images Contracts
     address public tama0;
     address public tama1;
     address public tama2;
     address public tama3;
 
+    //Food Token to feed the TAMA
     IERC20 foodToken;
     address public tamaFoodAddress;
 
-    address public dev1;
-    address public dev2;
+    /**
+     * -----------  EVENTS  -----------
+     */
 
     event levelUp(uint256 tokenId, uint8 newLevel);
     event tokenBorn(uint256 tokenId, uint256 birthTimestamp);
@@ -58,6 +62,10 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 
     constructor() ERC721("Tama", "TAMA") Ownable(msg.sender) {}
 
+    /**
+     * -----------  GAMEDATA STRUCTURE  -----------
+     */
+
     struct tokenData {
         uint8 level;
         uint256 startTime;
@@ -68,6 +76,10 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 
     mapping(uint256 => tokenData) public gameData;
 
+    /**
+     * -----------  CHECKS COMMON TO GAME FUNCTIONS  -----------
+     */
+
     modifier gameChecks(uint256 tokenId) {
         require(
             ownerOf(tokenId) == msg.sender,
@@ -76,8 +88,9 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 
         require(gameData[tokenId].startTime > 0, "Your Tama is not yet born");
 
-        //require i tempi non siano superiori a quanto necessario per non far morire il tamagotchi
         _;
+
+        //Level Up management
         if (
             gameData[tokenId].counter >= lv1Trigger &&
             gameData[tokenId].level < 1
@@ -120,18 +133,26 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
      * -----------  GAME FUNCTIONS  -----------
      */
 
+    //Hatches the Tama
     function start(uint256 tokenId) public {
         require(
             ownerOf(tokenId) == msg.sender,
             "You are not the tokenId holder"
         );
+        require(gameData[tokenId].startTime == 0, "Token already Hatched");
         _setTokenURI(tokenId, getTokenURI1(tokenId));
         gameData[tokenId].startTime = block.timestamp;
         emit tokenBorn(tokenId, gameData[tokenId].startTime);
     }
 
+    //Feeds the Tama with the TamaFood ERC-20 token
     function eat(uint256 tokenId) public payable gameChecks(tokenId) {
         foodToken = IERC20(tamaFoodAddress);
+        require(
+            block.timestamp - gameData[tokenId].lastEat > eatTime ||
+                gameData[tokenId].lastEat == 0,
+            "Tama is not hungry now. Please wait a bit."
+        );
         require(
             foodToken.transferFrom(msg.sender, address(this), eatFee),
             "Not enough TamaFood sent."
@@ -145,7 +166,13 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
         );
     }
 
+    //Plays with the Tama
     function play(uint256 tokenId) public gameChecks(tokenId) {
+        require(
+            block.timestamp - gameData[tokenId].lastPlay > playTime ||
+                gameData[tokenId].lastPlay == 0,
+            "Tama has just play. Please wait a bit."
+        );
         gameData[tokenId].lastPlay = block.timestamp;
         gameData[tokenId].counter += playPoints;
         emit tokenPlayed(
@@ -159,7 +186,10 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
      * -----------  SET IMAGE + METADATA FUNCTIONS  -----------
      */
 
-    function getTokenURI0(uint256 tokenId) public view returns (string memory) {
+    //Sets SVG encoding for each of the 4 different evolutions: egg, character1, character2, character3.
+    function getTokenURI0(
+        uint256 tokenId
+    ) internal view returns (string memory) {
         Character0 ch0 = Character0(tama0);
 
         bytes memory dataURI = abi.encodePacked(
@@ -183,7 +213,9 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
             );
     }
 
-    function getTokenURI1(uint256 tokenId) public view returns (string memory) {
+    function getTokenURI1(
+        uint256 tokenId
+    ) internal view returns (string memory) {
         Character1 ch1 = Character1(tama1);
 
         bytes memory dataURI = abi.encodePacked(
@@ -207,7 +239,9 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
             );
     }
 
-    function getTokenURI2(uint256 tokenId) public view returns (string memory) {
+    function getTokenURI2(
+        uint256 tokenId
+    ) internal view returns (string memory) {
         Character2 ch2 = Character2(tama2);
 
         bytes memory dataURI = abi.encodePacked(
@@ -231,7 +265,9 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
             );
     }
 
-    function getTokenURI3(uint256 tokenId) public view returns (string memory) {
+    function getTokenURI3(
+        uint256 tokenId
+    ) internal view returns (string memory) {
         Character3 ch3 = Character3(tama3);
 
         bytes memory dataURI = abi.encodePacked(
@@ -315,19 +351,14 @@ contract Tama is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
      * -----------  Financial Functions  -----------
      */
 
-    function withdraw() external onlyOwner {
-        uint256 balanceAfter = address(this).balance;
-        (bool s, ) = payable(dev1).call{value: balanceAfter / 2}("");
-        if (!s) revert TransferFailed();
-        (bool a, ) = payable(dev2).call{value: balanceAfter / 2}("");
-        if (!a) revert TransferFailed();
-
-        uint256 tokenBalanceAfter = foodToken.balanceOf(address(this));
-
-        if (!foodToken.transfer(dev1, tokenBalanceAfter / 2))
-            revert TransferFailed();
-        if (!foodToken.transfer(dev2, tokenBalanceAfter / 2))
-            revert TransferFailed();
+    function withdraw() public payable onlyOwner {
+        uint balance = address(this).balance;
+        (bool sent, bytes memory data) = msg.sender.call{value: balance}("");
+        require(sent, "Failed to send Ether");
+        //uint256 tokenBalance = foodToken.balanceOf(address(this));
+        /*if (tokenBalance != 0) {
+            foodToken.transfer(msg.sender, tokenBalance);
+        }*/
     }
 
     /**

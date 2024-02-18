@@ -20,7 +20,7 @@ contract Character0 {
             "</g>",
             "</g>",
             "</g>",
-            "<svg></svg>"
+            "</svg>"
         );
         return
             string(

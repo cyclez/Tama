@@ -86,8 +86,8 @@ const Home: NextPage = () => {
               </div>
               <div className="flex flex-col bg-base-100 px-5 py-10 text-center items-center max-w-xs rounded-3xl">
                 <div className="p-5">
-                  LEVEL - <strong>{level}</strong>
-                  <br />
+                  {/* LEVEL - <strong>{level}</strong>
+                  <br /> */}
                   POINTS - <strong>{counter.toString()}</strong>
                   <br />
                   BIRTH DATE - <strong>{Number(gameData ? gameData[1] : 0) == 0 ? "NOT BORN YET" : birthDate.toDateString()}</strong>
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
         { balanceOf == BigInt(0) &&
         <>
           <div className="flex items-center flex-col flex-grow pt-10">
-            <h1 className="text-4xl font-bold text-gray-900">GET YOUT TAMA</h1>
+            <h1 className="text-4xl font-bold text-gray-900">GET YOUR TAMA</h1>
             <button className="btn btn-primary" onClick={mintTama} disabled={Number(balanceOf)==2}>
               MINT NOW
             </button>
