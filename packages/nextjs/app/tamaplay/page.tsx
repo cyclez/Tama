@@ -15,25 +15,9 @@ import {
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
-  const [amount, setNewAmount] = useState(BigInt(1));
-  const [foodAmount, setNewFoodAmount] = useState(BigInt(1));
-  const [selectedTokenID, setTokenID] = useState(BigInt(0));
-
-  const { writeAsync: mintTama } = useScaffoldContractWrite({
-    contractName: "Tama",
-    functionName: "purchase",
-    args: [amount],
-    value: BigInt(10000000000000000),
-  });
 
   const { data: balanceOf } = useScaffoldContractRead({
     contractName: "Tama",
-    functionName: "balanceOf",
-    args: [connectedAddress],
-  });
-
-  const { data: balanceOfERC20 } = useScaffoldContractRead({
-    contractName: "TamaFood",
     functionName: "balanceOf",
     args: [connectedAddress],
   });
@@ -68,12 +52,6 @@ const Home: NextPage = () => {
     args: [tokenID],
   });
 
-  const { writeAsync: mintTamaFood } = useScaffoldContractWrite({
-    contractName: "TamaFood",
-    functionName: "mint",
-    args: [connectedAddress],
-    value: foodAmount,
-  });
 
   const { data: tamaContractData } = useDeployedContractInfo("Tama");
 
@@ -91,12 +69,7 @@ const Home: NextPage = () => {
     window.location.href = 'tamafoodmint';
   }
 
-  const level = gameData ? gameData[0] : 0;
   const startTime = gameData ? gameData[1] : 0;
-  const birthDate = new Date(Number(gameData ? gameData[1] : 0) * 1000)
-  const lastEat = new Date(Number(gameData ? gameData[2] : 0) * 1000);
-  const lastPlay = new Date(Number(gameData ? gameData[3] : 0) * 1000);
-  const counter = gameData ? gameData[4] : 0;
 
 
   return (
