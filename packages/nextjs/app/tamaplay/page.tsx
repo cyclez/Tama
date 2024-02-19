@@ -26,7 +26,7 @@ const Home: NextPage = () => {
   });
 
   const handleStart: MouseEventHandler<HTMLButtonElement> = () => {
-    return start;
+    return start();
   };
 
   const { writeAsync: start } = useScaffoldContractWrite({
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   });
 
   const handleEat: MouseEventHandler<HTMLButtonElement> = () => {
-    return eat;
+    return eat();
   };
 
   const { writeAsync: eat } = useScaffoldContractWrite({
@@ -47,7 +47,7 @@ const Home: NextPage = () => {
 
 
   const handlePlay: MouseEventHandler<HTMLButtonElement> = () => {
-    return play;
+    return play();
   };
 
   const { writeAsync: play } = useScaffoldContractWrite({
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
   const { data: tamaContractData } = useDeployedContractInfo("Tama");
 
   const handleApproveTamaFood: MouseEventHandler<HTMLButtonElement> = () => {
-    return approveTamaFood;
+    return approveTamaFood();
   };
 
   const { writeAsync: approveTamaFood } = useScaffoldContractWrite({

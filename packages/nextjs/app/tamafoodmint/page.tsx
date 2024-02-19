@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   // });
 
   const handleMintTamaFood: MouseEventHandler<HTMLButtonElement> = () => {
-    return mintTamaFood;
+    return mintTamaFood();
   };
 
   const { writeAsync: mintTamaFood } = useScaffoldContractWrite({
