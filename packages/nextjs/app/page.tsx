@@ -86,6 +86,10 @@ const Home: NextPage = () => {
           <h1 className="text-4xl font-bold text-gray-900">WALLET </h1>
           <br />
           <h1 className="text-4xl font-bold text-gray-900">MINT A TAMA</h1>
+          <br />
+          ⛓️ Arbitrum Sepolia Testnet <span style={{color:'purple'}}><a target="blank" href="https://sepolia.arbiscan.io/address/0xEdc0FA6Af968C2A16d555d24B6109F9b6A79971C">contract on Arbiscan</a></span>
+          <br />
+          🪙 Get ETH for sepolia testnet <span style={{color:'purple'}}><a  target="blank" href="https://www.alchemy.com/faucets/arbitrum-sepolia">here</a></span>
         </>
         }
 
