@@ -32,11 +32,11 @@ export const Footer = () => {
               </p>
               <a
                 className="flex justify-center items-center gap-1"
-                href="https://buidlguidl.com/"
+                href="https://linktr.ee/urbe.eth"
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className="link">Urbe Campus Hackatlon - Rome 2024</span>
+                <span className="link">Urbe campus hackathon2024</span>
               </a>
             </div>
           </div>

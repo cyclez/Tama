@@ -81,9 +81,12 @@ const Home: NextPage = () => {
       <div className="flex items-center flex-col flex-grow pt-10">
 
       { !connectedAddress &&
-        
-          <h1 className="text-4xl font-bold text-gray-900">CONNECT YOUR WALLET & MINT A TAMA</h1>
-        
+        <>
+          <h1 className="text-4xl font-bold text-gray-900">CONNECT YOUR </h1>
+          <h1 className="text-4xl font-bold text-gray-900">WALLET </h1>
+          <br />
+          <h1 className="text-4xl font-bold text-gray-900">MINT A TAMA</h1>
+        </>
         }
 
         { connectedAddress && balanceOf != BigInt(0) &&
